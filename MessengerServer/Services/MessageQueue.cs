@@ -44,7 +44,7 @@ namespace MessengerServer.Services
             }
         }
 
-        public List<Message> DequeueAll()
+        public List<Message> GetAllMessages()
         {
             lock (lockObj)
             {
