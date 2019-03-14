@@ -1,4 +1,4 @@
-﻿namespace MessengerCommon
+﻿namespace MessengerCommon.Models
 {
     public enum CommandEnum
     {

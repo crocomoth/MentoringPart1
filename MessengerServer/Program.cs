@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MessengerServer.Services;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,10 +7,13 @@ using System.Threading.Tasks;
 
 namespace MessengerServer
 {
-    class Program
+    public class Program
     {
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
+            Listener listener = new Listener();
+            listener.Initialize();
+            listener.Listen();
         }
     }
 }

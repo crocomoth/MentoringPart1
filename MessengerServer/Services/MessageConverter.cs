@@ -1,4 +1,4 @@
-﻿using MessengerCommon;
+﻿using MessengerCommon.Models;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -32,9 +32,9 @@ namespace MessengerServer.Services
             stringBuilder.Append(nameof(CommandEnum.Message));
             stringBuilder.Append(":");
             stringBuilder.Append(message.Author);
-            stringBuilder.Append(":");
+            stringBuilder.Append(Environment.NewLine);
             stringBuilder.Append(message.Time);
-            stringBuilder.Append(":");
+            stringBuilder.Append(Environment.NewLine);
             stringBuilder.Append(message.Text);
         }
     }

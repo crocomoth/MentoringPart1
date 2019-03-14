@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MessengerCommon
+namespace MessengerCommon.Models
 {
     public class Message
     {
