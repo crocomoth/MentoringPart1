@@ -14,6 +14,7 @@ namespace MessengerServer.Services
         {
             this.messages = new LinkedList<Message>();
             this.limit = size;
+            this.lockObj = new object();
         }
 
         public void AddToQueue(Message message)

@@ -16,11 +16,12 @@ namespace MessengerServer.Services
         {
             this.messageQueue = new MessageQueue();
             this.clientWorkers = new List<ClientWorker>();
+            this.locker = new object();
         }
 
         public void Initialize()
         {
-            this.mainSocket = new Socket(SocketType.Stream, ProtocolType.IPv4);
+            this.mainSocket = new Socket(SocketType.Stream, ProtocolType.Tcp);
             this.mainSocket.Bind(new IPEndPoint(IPAddress.Loopback, 1050));
             this.mainSocket.Listen(20);
         }
@@ -34,6 +35,7 @@ namespace MessengerServer.Services
                 lock (locker)
                 {
                     this.clientWorkers.Add(worker);
+                    worker.StartWorkWithClient();
                 }
             }
         }

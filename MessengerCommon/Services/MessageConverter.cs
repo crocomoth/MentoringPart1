@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace MessengerServer.Services
+namespace MessengerCommon.Services
 {
     public class MessageConverter
     {
@@ -27,17 +27,17 @@ namespace MessengerServer.Services
             return stringBuilder.ToString();
         }
 
-        public string ComposeMessage(string data)
+        public string ComposeMessage(string name, string data)
         {
             var splitted = data.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
             var stringBuilder = new StringBuilder();
             stringBuilder.Append(nameof(CommandEnum.Message));
             stringBuilder.Append(":");
+            stringBuilder.Append(name);
+            stringBuilder.Append(Environment.NewLine);
             stringBuilder.Append(splitted[0]);
             stringBuilder.Append(Environment.NewLine);
             stringBuilder.Append(splitted[1]);
-            stringBuilder.Append(Environment.NewLine);
-            stringBuilder.Append(splitted[2]);
             return stringBuilder.ToString();
         }
 

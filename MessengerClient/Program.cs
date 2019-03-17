@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MessengerClient.Services;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,6 +11,8 @@ namespace MessengerClient
     {
         static void Main(string[] args)
         {
+            MainWorker worker = new MainWorker();
+            worker.Start();
         }
     }
 }

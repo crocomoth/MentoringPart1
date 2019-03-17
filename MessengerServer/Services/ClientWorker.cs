@@ -108,8 +108,7 @@ namespace MessengerServer.Services
         #region Messaging
         public void SendMessage(string text)
         {
-            Message message = new Message(this.clientName, text, DateTime.Now);
-            var convertedMessage = this.messageConverter.ConvertMessage(message);
+            var convertedMessage = this.messageConverter.ComposeMessage(text);
             var bytePackage = this.byteFormatter.ConvertToByteArray(convertedMessage);
             // try catch can be used here to work with errors
             this.socket.Send(bytePackage);

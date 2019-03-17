@@ -46,6 +46,7 @@
     <Compile Include="Models\MessageResult.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\ByteFormatter.cs" />
+    <Compile Include="Services\MessageConverter.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -46,7 +46,6 @@
     <Compile Include="Exceptions\WrongCommandException.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Services\ByteFormatter.cs" />
     <Compile Include="Services\ClientWorker.cs" />
     <Compile Include="Services\CommandConverter.cs" />
     <Compile Include="Services\Listener.cs" />

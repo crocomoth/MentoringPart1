@@ -45,10 +45,17 @@
   <ItemGroup>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\MainWorker.cs" />
     <Compile Include="Services\SocketWorker.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MessengerCommon\MessengerCommon.csproj">
+      <Project>{9275d9b6-4a71-418a-9f15-49fda3070235}</Project>
+      <Name>MessengerCommon</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
