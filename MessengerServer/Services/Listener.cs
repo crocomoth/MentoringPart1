@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using MessengerCommon.Models;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
 
@@ -6,7 +7,7 @@ namespace MessengerServer.Services
 {
     public class Listener
     {
-        public MessageQueue messageQueue;
+        private MessageQueue messageQueue;
         public List<ClientWorker> clientWorkers;
         //lock object to lock collection of workers
         public object locker;
@@ -57,6 +58,16 @@ namespace MessengerServer.Services
             {
                 this.clientWorkers.Remove(worker);
             }
+        }
+
+        public void AddMessageToQueue(Message message)
+        {
+            this.messageQueue.AddToQueue(message);
+        }
+
+        public List<Message> GetMessagesFromQueue()
+        {
+            return this.messageQueue.GetAllMessages();
         }
     }
 }

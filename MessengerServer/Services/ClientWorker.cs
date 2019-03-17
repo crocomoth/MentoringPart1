@@ -116,6 +116,9 @@ namespace MessengerServer.Services
         #region Messaging
         public void SendMessage(string text)
         {
+            var message = this.messageConverter.CreateMessage(text);
+            this.parent.AddMessageToQueue(message);
+            //replace with message convert
             var convertedMessage = this.messageConverter.ComposeMessage(text);
             var bytePackage = this.byteFormatter.ConvertToByteArray(convertedMessage);
             // try catch can be used here to work with errors
@@ -125,7 +128,7 @@ namespace MessengerServer.Services
         //send history to client
         private void PushHistoryToClient(Socket socket)
         {
-            var history = this.messageConverter.ConvertHistory(this.parent.messageQueue.GetAllMessages());
+            var history = this.messageConverter.ConvertHistory(this.parent.GetMessagesFromQueue());
             var historyAsByteArray = this.byteFormatter.ConvertToByteArray(history);
             socket.Send(historyAsByteArray);
         }

@@ -27,18 +27,25 @@ namespace MessengerCommon.Services
             return stringBuilder.ToString();
         }
 
-        public string ComposeMessage(string name, string data)
+        public string ComposeMessage(string data)
         {
             var splitted = data.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
             var stringBuilder = new StringBuilder();
             stringBuilder.Append(nameof(CommandEnum.Message));
             stringBuilder.Append(":");
-            stringBuilder.Append(name);
-            stringBuilder.Append(Environment.NewLine);
             stringBuilder.Append(splitted[0]);
             stringBuilder.Append(Environment.NewLine);
             stringBuilder.Append(splitted[1]);
+            stringBuilder.Append(Environment.NewLine);
+            stringBuilder.Append(splitted[2]);
             return stringBuilder.ToString();
+        }
+
+        public Message CreateMessage(string data)
+        {
+            var splitted = data.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
+            Message message = new Message(splitted[0], splitted[2], Convert.ToDateTime(splitted[1]));
+            return message;
         }
 
         private void ConvertSingleMessage(Message message, StringBuilder stringBuilder)

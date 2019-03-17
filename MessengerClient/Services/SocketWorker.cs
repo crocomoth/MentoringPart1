@@ -23,7 +23,7 @@ namespace MessengerClient.Services
 
         public SocketWorker(MainWorker main)
         {
-            this.buffer = new byte[1024];
+            this.buffer = new byte[10000];
             this.stopReading = false;
             this.byteFormatter = new ByteFormatter();
             dataAsString = string.Empty;
@@ -90,6 +90,18 @@ namespace MessengerClient.Services
             var text = nameof(CommandEnum.Login) + ":" + name;
             var byteArray = this.byteFormatter.ConvertToByteArray(text);
             mainSocket.Send(byteArray);
+            this.GetHistory();
+        }
+
+        private void GetHistory()
+        {
+            int counter = 0;
+            int amount = this.mainSocket.Receive(buffer);
+            do
+            {
+
+            } while (true);
+
         }
 
         public void CloseConnection()

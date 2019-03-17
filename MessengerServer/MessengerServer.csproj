@@ -48,7 +48,6 @@
     <Compile Include="Services\ClientWorker.cs" />
     <Compile Include="Services\CommandConverter.cs" />
     <Compile Include="Services\Listener.cs" />
-    <Compile Include="Services\MessageConverter.cs" />
     <Compile Include="Services\MessageQueue.cs" />
   </ItemGroup>
   <ItemGroup>
