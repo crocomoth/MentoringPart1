@@ -19,6 +19,7 @@ namespace MessengerClient.Services
         private string dataAsString;
         private MainWorker mainWorker;
         private MessageConverter messageConverter;
+        private ConsoleLogger logger;
 
         public SocketWorker(MainWorker main)
         {
@@ -28,6 +29,7 @@ namespace MessengerClient.Services
             dataAsString = string.Empty;
             this.mainWorker = main;
             this.messageConverter = new MessageConverter();
+            this.logger = new ConsoleLogger();
         }
 
         public void Initialize()
@@ -45,16 +47,33 @@ namespace MessengerClient.Services
         private void Listen(object socketAsObj)
         {
             Socket socket = (Socket)socketAsObj;
-            while (!stopReading)
+            try
             {
-                amount = mainSocket.Receive(buffer);
-                if (amount > 0)
+                while (!stopReading)
                 {
-                    dataAsString = this.byteFormatter.ConvertToString(buffer, 0, amount);
-                    var messageData = ParseMessage(dataAsString);
-                    this.mainWorker.WriteToConsole(messageData);
+                    amount = mainSocket.Receive(buffer);
+                    if (amount > 0)
+                    {
+                        dataAsString = this.byteFormatter.ConvertToString(buffer, 0, amount);
+                        var messageData = ParseMessage(dataAsString);
+                        this.mainWorker.WriteToConsole(messageData);
+                    }
                 }
             }
+            catch (SocketException)
+            {
+                //user shoudlnt know when it is closed
+                logger.Log("closing...");
+            }
+            catch(Exception e)
+            {
+                logger.Log("got exception. Exit application", e);
+            }
+            finally
+            {
+                this.Dispose();
+            }
+
         }
 
         public void Send(string data)

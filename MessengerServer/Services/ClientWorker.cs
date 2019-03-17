@@ -1,6 +1,6 @@
-﻿using MessengerCommon.Models;
+﻿using MessengerCommon.Exceptions;
+using MessengerCommon.Models;
 using MessengerCommon.Services;
-using MessengerServer.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Net.Sockets;
@@ -21,6 +21,7 @@ namespace MessengerServer.Services
         private MessageConverter messageConverter;
         private ByteFormatter byteFormatter;
         private Dictionary<CommandEnum, Action<string>> actions;
+        private ConsoleLogger logger;
         private bool shouldExit;
 
         public ClientWorker(Socket socket, Listener listener)
@@ -34,7 +35,10 @@ namespace MessengerServer.Services
             commandConverter = new CommandConverter();
             messageConverter = new MessageConverter();
             byteFormatter = new ByteFormatter();
+            logger = new ConsoleLogger();
+
             this.shouldExit = false;
+
             actions = new Dictionary<CommandEnum, Action<string>>();
             actions.Add(CommandEnum.Message, StartSending);
             actions.Add(CommandEnum.LogOut, LogOut);
@@ -64,7 +68,11 @@ namespace MessengerServer.Services
             }
             catch (WrongCommandException)
             {
-                //Notify ? abort if wrong command
+                logger.Log("wrong command specified");
+            }
+            catch (SocketException e)
+            {
+                logger.Log("socket exception", e);
             }
             finally
             {

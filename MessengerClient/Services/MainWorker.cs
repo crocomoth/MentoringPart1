@@ -5,7 +5,6 @@ namespace MessengerClient.Services
 {
     public class MainWorker
     {
-        public string UserName;
         private Thread thread;
         private string data;
         private bool isWorking;
@@ -13,11 +12,11 @@ namespace MessengerClient.Services
 
         public MainWorker()
         {
-            data = string.Empty;
-            isWorking = true;
-            worker = new SocketWorker(this);
-            worker.Initialize();
-            thread = new Thread(() => ReadFromConsole());
+            this.data = string.Empty;
+            this.isWorking = true;
+            this.worker = new SocketWorker(this);
+            this.worker.Initialize();
+            this.thread = new Thread(() => ReadFromConsole());
         }
 
         public void Start()
@@ -29,10 +28,10 @@ namespace MessengerClient.Services
                 firstInput = Console.ReadLine();
             } while (firstInput == string.Empty);
 
-            worker.SendName(firstInput);
+            this.worker.SendName(firstInput);
 
-            thread.Start();
-            worker.StartListening();
+            this.thread.Start();
+            this.worker.StartListening();
         }
 
         public void WriteToConsole(string text)
@@ -52,13 +51,13 @@ namespace MessengerClient.Services
         {
             while (isWorking)
             {
-                data = Console.ReadLine();
-                if (data == "quit")
+                this.data = Console.ReadLine();
+                if (this.data == "quit")
                 {
                     break;
                 }
 
-                worker.Send(data);
+                this.worker.Send(data);
             }
 
             this.worker.stopReading = true;

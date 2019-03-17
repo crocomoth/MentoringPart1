@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.Serialization;
 
-namespace MessengerServer.Exceptions
+namespace MessengerCommon.Exceptions
 {
     public class WrongCommandException : Exception
     {
