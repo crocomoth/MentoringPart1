@@ -1,9 +1,5 @@
 ﻿using MessengerClient.Services;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MessengerClient
 {
@@ -12,7 +8,15 @@ namespace MessengerClient
         static void Main(string[] args)
         {
             MainWorker worker = new MainWorker();
-            worker.Start();
+            try
+            {
+                worker.Start();
+            }
+            catch (Exception)
+            {
+                //catch in case server is not running
+                return;
+            }
         }
     }
 }

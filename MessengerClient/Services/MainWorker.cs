@@ -15,12 +15,12 @@ namespace MessengerClient.Services
             this.data = string.Empty;
             this.isWorking = true;
             this.worker = new SocketWorker(this);
-            this.worker.Initialize();
             this.thread = new Thread(() => ReadFromConsole());
         }
 
         public void Start()
         {
+            this.worker.Initialize();
             Console.WriteLine("enter username");
             var firstInput = string.Empty;
             do

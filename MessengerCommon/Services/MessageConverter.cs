@@ -11,10 +11,12 @@ namespace MessengerCommon.Services
         {
             // keep it local so every thread has its own. LEss time consuming, more resource consuming
             StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.Append(nameof(CommandEnum.RecvHistory));
+            stringBuilder.Append(":");
             foreach (var message in messages)
             {
                 ConvertSingleMessage(message, stringBuilder);
-                stringBuilder.Append(Environment.NewLine);
+                stringBuilder.Append('\x0003');
             }
 
             return stringBuilder.ToString();

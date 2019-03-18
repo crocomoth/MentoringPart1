@@ -9,6 +9,7 @@ namespace MessengerClient.Services
 {
     public class SocketWorker: IDisposable
     {
+        private const string saidConstant = " said on ";
         public bool stopReading;
         private string userName;
         private Socket mainSocket;
@@ -35,7 +36,18 @@ namespace MessengerClient.Services
         public void Initialize()
         {
             this.mainSocket = new Socket(SocketType.Stream, ProtocolType.Tcp);
-            mainSocket.Connect(IPAddress.Loopback, 1050);
+            try
+            {
+                mainSocket.Connect(IPAddress.Loopback, 1050);
+            }
+            catch (Exception)
+            {
+                this.logger.Log("server seems not to be up sorry :(");
+                this.Dispose();
+                Console.ReadLine();
+                throw;
+            }
+
             this.thread = new Thread(() => Listen(mainSocket));
         }
 
@@ -63,7 +75,7 @@ namespace MessengerClient.Services
             catch (SocketException)
             {
                 //user shoudlnt know when it is closed
-                logger.Log("closing...");
+                logger.Log("server error closing app...");
             }
             catch(Exception e)
             {
@@ -95,12 +107,21 @@ namespace MessengerClient.Services
 
         private void GetHistory()
         {
-            int counter = 0;
             int amount = this.mainSocket.Receive(buffer);
-            do
+            dataAsString = this.byteFormatter.ConvertToString(buffer, 0, amount);
+            var commandAndData = dataAsString.Split(new[] { ':' }, 2);
+            //less nested + shorter
+            if (commandAndData[1].Length == 0)
             {
+                return;
+            }
 
-            } while (true);
+            var parts = commandAndData[1].Split(new[] { '\x0003' }, StringSplitOptions.RemoveEmptyEntries);
+            foreach (var part in parts)
+            {
+                var messageData = ParseMessage(part);
+                this.mainWorker.WriteToConsole(messageData);
+            }
 
         }
 
@@ -121,7 +142,7 @@ namespace MessengerClient.Services
                 var parts = message.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
 
                 string[] result = new string[2];
-                result[0] = parts[0] + " said on " + parts[1];
+                result[0] = parts[0] + saidConstant + parts[1];
                 result[1] = parts[2];
                 return result;
             }

@@ -57,6 +57,7 @@ namespace MessengerServer.Services
                 amount = socket.Receive(data);
                 dataAsString = this.byteFormatter.ConvertToString(data, 0, amount);
                 clientName = this.ParseName(dataAsString);
+                this.logger.Log($"got client with name {clientName}");
                 this.PushHistoryToClient(socket);
 
                 while (!shouldExit)
@@ -72,7 +73,7 @@ namespace MessengerServer.Services
             }
             catch (SocketException e)
             {
-                logger.Log("socket exception", e);
+                logger.Log("connection closed", e);
             }
             finally
             {
@@ -123,6 +124,7 @@ namespace MessengerServer.Services
             var bytePackage = this.byteFormatter.ConvertToByteArray(convertedMessage);
             // try catch can be used here to work with errors
             this.socket.Send(bytePackage);
+            this.logger.Log($"message sent on {DateTime.Now}");
         }
 
         //send history to client
@@ -130,6 +132,10 @@ namespace MessengerServer.Services
         {
             var history = this.messageConverter.ConvertHistory(this.parent.GetMessagesFromQueue());
             var historyAsByteArray = this.byteFormatter.ConvertToByteArray(history);
+            if (historyAsByteArray.Length == 0)
+            {
+                socket.Send(this.byteFormatter.ConvertToByteArray(" "));
+            }
             socket.Send(historyAsByteArray);
         }
 
