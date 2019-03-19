@@ -22,6 +22,8 @@ namespace MessengerClient.Services
         private MessageConverter messageConverter;
         private ConsoleLogger logger;
 
+        public event Action threadFinished; 
+
         public SocketWrapper(ClientService main)
         {
             this.buffer = new byte[10000];
@@ -83,6 +85,10 @@ namespace MessengerClient.Services
             }
             finally
             {
+                if (threadFinished != null)
+                {
+                    threadFinished.Invoke();
+                }
                 this.Dispose();
             }
 

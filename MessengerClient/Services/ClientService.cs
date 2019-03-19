@@ -8,19 +8,20 @@ namespace MessengerClient.Services
         private Thread thread;
         private string data;
         private bool isWorking;
-        private SocketWrapper worker;
+        private SocketWrapper wrapper;
 
         public ClientService()
         {
             this.data = string.Empty;
             this.isWorking = true;
-            this.worker = new SocketWrapper(this);
+            this.wrapper = new SocketWrapper(this);
+            this.wrapper.threadFinished += this.HandleWrapperClosing; 
             this.thread = new Thread(() => ReadFromConsole());
         }
 
         public void Start()
         {
-            this.worker.Initialize();
+            this.wrapper.Initialize();
             Console.WriteLine("enter username");
             var firstInput = string.Empty;
             do
@@ -28,10 +29,10 @@ namespace MessengerClient.Services
                 firstInput = Console.ReadLine();
             } while (firstInput == string.Empty);
 
-            this.worker.SendName(firstInput);
+            this.wrapper.SendName(firstInput);
 
             this.thread.Start();
-            this.worker.StartListening();
+            this.wrapper.StartListening();
         }
 
         public void WriteToConsole(string text)
@@ -47,9 +48,15 @@ namespace MessengerClient.Services
             }
         }
 
+        public void HandleWrapperClosing()
+        {
+            this.isWorking = false;
+            Console.WriteLine("error occured press enter to exit");
+        }
+
         private void ReadFromConsole()
         {
-            while (isWorking)
+            while (true)
             {
                 this.data = Console.ReadLine();
                 if (this.data == "quit")
@@ -57,11 +64,25 @@ namespace MessengerClient.Services
                     break;
                 }
 
-                this.worker.Send(data);
+                if (!isWorking)
+                {
+                    break;
+                }
+
+                try
+                {
+                    this.wrapper.Send(data);
+                }
+                catch (Exception)
+                {
+                    Console.WriteLine("Server is unreachable");
+                    isWorking = false;
+                }
+
             }
 
-            this.worker.stopReading = true;
-            this.worker.Dispose();
+            this.wrapper.stopReading = true;
+            this.wrapper.Dispose();
         }
     }
 }
