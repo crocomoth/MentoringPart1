@@ -7,7 +7,7 @@ namespace MessengerClient
     {
         static void Main(string[] args)
         {
-            MainWorker worker = new MainWorker();
+            ClientService worker = new ClientService();
             try
             {
                 worker.Start();

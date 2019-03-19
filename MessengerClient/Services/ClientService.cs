@@ -3,18 +3,18 @@ using System.Threading;
 
 namespace MessengerClient.Services
 {
-    public class MainWorker
+    public class ClientService
     {
         private Thread thread;
         private string data;
         private bool isWorking;
-        private SocketWorker worker;
+        private SocketWrapper worker;
 
-        public MainWorker()
+        public ClientService()
         {
             this.data = string.Empty;
             this.isWorking = true;
-            this.worker = new SocketWorker(this);
+            this.worker = new SocketWrapper(this);
             this.thread = new Thread(() => ReadFromConsole());
         }
 

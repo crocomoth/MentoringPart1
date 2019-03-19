@@ -8,7 +8,7 @@ using System.Threading;
 
 namespace MessengerServer.Services
 {
-    public class ClientWorker : IDisposable
+    public class ClientSocketWrapper : IDisposable
     {
         public Socket socket;
         private byte[] data;
@@ -16,7 +16,7 @@ namespace MessengerServer.Services
         private int amount;
         private string dataAsString;
         private Thread thread;
-        private Listener parent;
+        private MainService parent;
         private CommandConverter commandConverter;
         private MessageConverter messageConverter;
         private ByteFormatter byteFormatter;
@@ -24,7 +24,7 @@ namespace MessengerServer.Services
         private ConsoleLogger logger;
         private bool shouldExit;
 
-        public ClientWorker(Socket socket, Listener listener)
+        public ClientSocketWrapper(Socket socket, MainService listener)
         {
             this.socket = socket;
             data = new byte[1024];//ok for now

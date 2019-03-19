@@ -11,7 +11,7 @@ namespace MessengerServer
     {
         public static void Main(string[] args)
         {
-            Listener listener = new Listener();
+            MainService listener = new MainService();
             listener.Initialize();
             listener.Listen();
         }

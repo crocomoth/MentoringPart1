@@ -45,9 +45,9 @@
   <ItemGroup>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Services\ClientWorker.cs" />
+    <Compile Include="Services\ClientSocketWrapper.cs" />
     <Compile Include="Services\CommandConverter.cs" />
-    <Compile Include="Services\Listener.cs" />
+    <Compile Include="Services\MainService.cs" />
     <Compile Include="Services\MessageQueue.cs" />
   </ItemGroup>
   <ItemGroup>

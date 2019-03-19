@@ -7,7 +7,7 @@ using System.Threading;
 
 namespace MessengerClient.Services
 {
-    public class SocketWorker: IDisposable
+    public class SocketWrapper: IDisposable
     {
         private const string saidConstant = " said on ";
         public bool stopReading;
@@ -18,11 +18,11 @@ namespace MessengerClient.Services
         private ByteFormatter byteFormatter;
         private int amount;
         private string dataAsString;
-        private MainWorker mainWorker;
+        private ClientService mainWorker;
         private MessageConverter messageConverter;
         private ConsoleLogger logger;
 
-        public SocketWorker(MainWorker main)
+        public SocketWrapper(ClientService main)
         {
             this.buffer = new byte[10000];
             this.stopReading = false;

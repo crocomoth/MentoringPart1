@@ -5,18 +5,18 @@ using System.Net.Sockets;
 
 namespace MessengerServer.Services
 {
-    public class Listener
+    public class MainService
     {
         private MessageQueue messageQueue;
-        public List<ClientWorker> clientWorkers;
+        public List<ClientSocketWrapper> clientWorkers;
         //lock object to lock collection of workers
         public object locker;
         private Socket mainSocket;
 
-        public Listener()
+        public MainService()
         {
             this.messageQueue = new MessageQueue();
-            this.clientWorkers = new List<ClientWorker>();
+            this.clientWorkers = new List<ClientSocketWrapper>();
             this.locker = new object();
         }
 
@@ -32,7 +32,7 @@ namespace MessengerServer.Services
             while (true)
             {
                 var clientSocket = this.mainSocket.Accept();
-                var worker = new ClientWorker(clientSocket, this);
+                var worker = new ClientSocketWrapper(clientSocket, this);
                 lock (locker)
                 {
                     this.clientWorkers.Add(worker);
@@ -52,7 +52,7 @@ namespace MessengerServer.Services
             }
         }
 
-        public void RemoveWorker(ClientWorker worker)
+        public void RemoveWorker(ClientSocketWrapper worker)
         {
             lock (locker)
             {

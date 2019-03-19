@@ -45,8 +45,8 @@
   <ItemGroup>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Services\MainWorker.cs" />
-    <Compile Include="Services\SocketWorker.cs" />
+    <Compile Include="Services\ClientService.cs" />
+    <Compile Include="Services\SocketWrapper.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
