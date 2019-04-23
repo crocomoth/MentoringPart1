@@ -31,11 +31,12 @@ namespace MessengerClient.Services
         {
             this.buffer = new byte[10000];
             this.StopReading = false;
-            this.byteFormatter = new ByteFormatter();
             dataAsString = string.Empty;
+
+            this.byteFormatter = InterceptSetter.SetInterceptorToClass(new ByteFormatter());
             this.mainWorker = main;
-            this.messageConverter = new MessageConverter();
-            this.logger = new ConsoleLogger();
+            this.messageConverter = InterceptSetter.SetInterceptorToClass(new MessageConverter());
+            this.logger = InterceptSetter.SetInterceptorToClass(new ConsoleLogger());
         }
 
         public void Initialize()

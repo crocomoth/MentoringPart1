@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MessengerCommon.Services;
 
 namespace MessengerServer
 {
@@ -11,7 +12,7 @@ namespace MessengerServer
     {
         public static void Main(string[] args)
         {
-            MainService listener = new MainService();
+            MainService listener = InterceptSetter.SetInterceptorToClass(new MainService());
             listener.Initialize();
             listener.Listen();
         }

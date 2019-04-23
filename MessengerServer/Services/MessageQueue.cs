@@ -11,10 +11,10 @@ namespace MessengerServer.Services
         private readonly int limit;
         private readonly object lockObj;
 
-        public MessageQueue(int size = 100)
+        public MessageQueue()
         {
             this.messages = new LinkedList<Message>();
-            this.limit = size;
+            this.limit = 100;
             this.lockObj = new object();
         }
 

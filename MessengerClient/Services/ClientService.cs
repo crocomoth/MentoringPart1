@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading;
 using MessengerClient.Services.Interfaces;
+using MessengerCommon.Services;
 
 namespace MessengerClient.Services
 {

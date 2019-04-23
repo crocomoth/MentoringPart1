@@ -34,10 +34,10 @@ namespace MessengerServer.Services
             amount = 0;
             dataAsString = string.Empty;
             this.parent = listener;
-            commandConverter = new CommandConverter();
-            messageConverter = new MessageConverter();
-            byteFormatter = new ByteFormatter();
-            logger = new ConsoleLogger();
+            commandConverter = InterceptSetter.SetInterceptorToClass(new CommandConverter());
+            messageConverter = InterceptSetter.SetInterceptorToClass(new MessageConverter());
+            byteFormatter =InterceptSetter.SetInterceptorToClass(new ByteFormatter());
+            logger = InterceptSetter.SetInterceptorToClass(new ConsoleLogger());
 
             this.shouldExit = false;
 

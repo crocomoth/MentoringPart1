@@ -9,12 +9,12 @@ namespace MessengerCommon.Services
 {
     public class ConsoleLogger : IConsoleLogger
     {
-        public void Log(string message)
+        public virtual void Log(string message)
         {
             Console.WriteLine(message);
         }
 
-        public void Log(string message, Exception e)
+        public virtual void Log(string message, Exception e)
         {
             Console.WriteLine(message + " " + e.Message);
         }

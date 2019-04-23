@@ -15,10 +15,10 @@ namespace MessengerCommon.Models
             ReturnType = returnType;
         }
 
-        public object[] Parameters { get; set; }
-
         public string MethodName { get; set; }
 
         public Type ReturnType { get; set; }
+
+        public object[] Parameters { get; set; }
     }
 }

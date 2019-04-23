@@ -7,6 +7,8 @@ using Castle.DynamicProxy;
 using MessengerCommon.Models;
 using Newtonsoft.Json;
 using NLog;
+using NLog.Config;
+using NLog.Targets;
 
 namespace MessengerCommon.Services
 {
@@ -16,7 +18,19 @@ namespace MessengerCommon.Services
 
         public LoggingInterceptor()
         {
-            logger = LogManager.GetLogger("interceptLogger");
+            var config = new LoggingConfiguration();
+
+            var fileTarget = new FileTarget("target")
+            {
+                FileName = "${basedir}/file.txt",
+                Layout = "${longdate} ${level} ${message}  ${exception}"
+            };
+            config.AddTarget(fileTarget);
+
+            config.AddRuleForAllLevels(fileTarget);
+            LogManager.Configuration = config;
+
+            logger = NLog.LogManager.GetCurrentClassLogger();
         }
 
         public void Intercept(IInvocation invocation)
