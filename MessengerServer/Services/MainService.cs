@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
+using MessengerServer.Services.Interfaces;
 
 namespace MessengerServer.Services
 {
-    public class MainService
+    public class MainService : IMainService
     {
-        private MessageQueue messageQueue;
-        public List<ClientSocketWrapper> clientWorkers;
+        private readonly MessageQueue messageQueue;
+        public List<ClientSocketWrapper> ClientWorkers;
         //lock object to lock collection of workers
         public object locker;
         private Socket mainSocket;
@@ -16,7 +17,7 @@ namespace MessengerServer.Services
         public MainService()
         {
             this.messageQueue = new MessageQueue();
-            this.clientWorkers = new List<ClientSocketWrapper>();
+            this.ClientWorkers = new List<ClientSocketWrapper>();
             this.locker = new object();
         }
 
@@ -35,7 +36,7 @@ namespace MessengerServer.Services
                 var worker = new ClientSocketWrapper(clientSocket, this);
                 lock (locker)
                 {
-                    this.clientWorkers.Add(worker);
+                    this.ClientWorkers.Add(worker);
                     worker.StartWorkWithClient();
                 }
             }
@@ -45,7 +46,7 @@ namespace MessengerServer.Services
         {
             lock (locker)
             {
-                foreach (var worker in clientWorkers)
+                foreach (var worker in ClientWorkers)
                 {
                     worker.SendMessage(text);
                 }
@@ -56,7 +57,7 @@ namespace MessengerServer.Services
         {
             lock (locker)
             {
-                this.clientWorkers.Remove(worker);
+                this.ClientWorkers.Remove(worker);
             }
         }
 

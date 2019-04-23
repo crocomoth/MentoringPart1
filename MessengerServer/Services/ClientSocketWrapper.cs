@@ -5,23 +5,25 @@ using System;
 using System.Collections.Generic;
 using System.Net.Sockets;
 using System.Threading;
+using MessengerCommon.Services.Interfaces;
+using MessengerServer.Services.Interfaces;
 
 namespace MessengerServer.Services
 {
-    public class ClientSocketWrapper : IDisposable
+    public class ClientSocketWrapper : IDisposable, IClientSocketWrapper
     {
         public Socket socket;
-        private byte[] data;
+        private readonly byte[] data;
         private string clientName;
         private int amount;
         private string dataAsString;
         private Thread thread;
-        private MainService parent;
-        private CommandConverter commandConverter;
-        private MessageConverter messageConverter;
-        private ByteFormatter byteFormatter;
-        private Dictionary<CommandEnum, Action<string>> actions;
-        private ConsoleLogger logger;
+        private readonly IMainService parent;
+        private readonly ICommandConverter commandConverter;
+        private readonly IMessageConverter messageConverter;
+        private readonly IByteFormatter byteFormatter;
+        private readonly Dictionary<CommandEnum, Action<string>> actions;
+        private readonly IConsoleLogger logger;
         private bool shouldExit;
 
         public ClientSocketWrapper(Socket socket, MainService listener)
@@ -39,9 +41,10 @@ namespace MessengerServer.Services
 
             this.shouldExit = false;
 
-            actions = new Dictionary<CommandEnum, Action<string>>();
-            actions.Add(CommandEnum.Message, StartSending);
-            actions.Add(CommandEnum.LogOut, LogOut);
+            actions = new Dictionary<CommandEnum, Action<string>>
+            {
+                {CommandEnum.Message, StartSending}, {CommandEnum.LogOut, LogOut}
+            };
         }
 
         public void StartWorkWithClient()

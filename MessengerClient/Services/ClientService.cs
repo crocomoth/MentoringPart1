@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Threading;
+using MessengerClient.Services.Interfaces;
 
 namespace MessengerClient.Services
 {
-    public class ClientService
+    public class ClientService : IClientService
     {
-        private Thread thread;
+        private readonly Thread thread;
         private string data;
         private bool isWorking;
-        private SocketWrapper wrapper;
+        private readonly ISocketWrapper wrapper;
 
         public ClientService()
         {
@@ -81,7 +82,7 @@ namespace MessengerClient.Services
 
             }
 
-            this.wrapper.stopReading = true;
+            this.wrapper.StopReading = true;
             this.wrapper.Dispose();
         }
     }

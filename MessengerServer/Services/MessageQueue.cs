@@ -1,14 +1,15 @@
 ﻿using MessengerCommon.Models;
 using System.Collections.Generic;
 using System.Linq;
+using MessengerServer.Services.Interfaces;
 
 namespace MessengerServer.Services
 {
-    public class MessageQueue
+    public class MessageQueue : IMessageQueue
     {
-        private LinkedList<Message> messages;
-        private int limit;
-        private object lockObj;
+        private readonly LinkedList<Message> messages;
+        private readonly int limit;
+        private readonly object lockObj;
 
         public MessageQueue(int size = 100)
         {

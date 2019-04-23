@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MessengerCommon.Services.Interfaces;
 
 namespace MessengerCommon.Services
 {
-    public class ConsoleLogger
+    public class ConsoleLogger : IConsoleLogger
     {
         public void Log(string message)
         {

@@ -4,30 +4,33 @@ using System;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
+using MessengerClient.Services.Interfaces;
+using MessengerCommon.Services.Interfaces;
 
 namespace MessengerClient.Services
 {
-    public class SocketWrapper: IDisposable
+    public class SocketWrapper : IDisposable, ISocketWrapper
     {
-        private const string saidConstant = " said on ";
-        public bool stopReading;
+        public bool StopReading { get; set; }
+
+        private const string SaidConstant = " said on ";
         private string userName;
         private Socket mainSocket;
         private Thread thread;
-        private byte[] buffer;
-        private ByteFormatter byteFormatter;
+        private readonly byte[] buffer;
+        private readonly IByteFormatter byteFormatter;
         private int amount;
         private string dataAsString;
-        private ClientService mainWorker;
-        private MessageConverter messageConverter;
-        private ConsoleLogger logger;
+        private readonly IClientService mainWorker;
+        private readonly IMessageConverter messageConverter;
+        private readonly IConsoleLogger logger;
 
         public event Action threadFinished; 
 
         public SocketWrapper(ClientService main)
         {
             this.buffer = new byte[10000];
-            this.stopReading = false;
+            this.StopReading = false;
             this.byteFormatter = new ByteFormatter();
             dataAsString = string.Empty;
             this.mainWorker = main;
@@ -63,7 +66,7 @@ namespace MessengerClient.Services
             Socket socket = (Socket)socketAsObj;
             try
             {
-                while (!stopReading)
+                while (!StopReading)
                 {
                     amount = mainSocket.Receive(buffer);
                     if (amount > 0)
@@ -76,7 +79,7 @@ namespace MessengerClient.Services
             }
             catch (SocketException)
             {
-                //user shoudlnt know when it is closed
+                //user shouldn't know when it is closed
                 logger.Log("server error closing app...");
             }
             catch(Exception e)
@@ -85,10 +88,7 @@ namespace MessengerClient.Services
             }
             finally
             {
-                if (threadFinished != null)
-                {
-                    threadFinished.Invoke();
-                }
+                threadFinished?.Invoke();
                 this.Dispose();
             }
 
@@ -134,8 +134,8 @@ namespace MessengerClient.Services
         public void CloseConnection()
         {
             var text = nameof(CommandEnum.LogOut) + ":";
-            var byteArrat = this.byteFormatter.ConvertToByteArray(text);
-            mainSocket.Send(byteArrat);
+            var byteArray = this.byteFormatter.ConvertToByteArray(text);
+            mainSocket.Send(byteArray);
         }
 
         private string[] ParseMessage(string dataAsString)
@@ -148,7 +148,7 @@ namespace MessengerClient.Services
                 var parts = message.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
 
                 string[] result = new string[2];
-                result[0] = parts[0] + saidConstant + parts[1];
+                result[0] = parts[0] + SaidConstant + parts[1];
                 result[1] = parts[2];
                 return result;
             }
@@ -158,7 +158,7 @@ namespace MessengerClient.Services
 
         public void Dispose()
         {
-            this.stopReading = true;
+            this.StopReading = true;
             this.mainSocket.Dispose();
         }
     }

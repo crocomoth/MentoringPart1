@@ -2,10 +2,11 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using MessengerCommon.Services.Interfaces;
 
 namespace MessengerCommon.Services
 {
-    public class MessageConverter
+    public class MessageConverter : IMessageConverter
     {
         public string ConvertHistory(List<Message> messages)
         {

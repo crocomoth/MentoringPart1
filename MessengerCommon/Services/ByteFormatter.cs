@@ -1,8 +1,9 @@
 ﻿using System.Text;
+using MessengerCommon.Services.Interfaces;
 
 namespace MessengerCommon.Services
 {
-    public class ByteFormatter
+    public class ByteFormatter : IByteFormatter
     {
         public byte[] ConvertToByteArray(string data)
         {

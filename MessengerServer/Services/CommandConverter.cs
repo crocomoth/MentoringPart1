@@ -1,8 +1,9 @@
 ﻿using MessengerCommon.Models;
+using MessengerServer.Services.Interfaces;
 
 namespace MessengerServer.Services
 {
-    public class CommandConverter
+    public class CommandConverter : ICommandConverter
     {
         public CommandEnum GetCommand(string data)
         {
