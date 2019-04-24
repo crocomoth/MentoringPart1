@@ -2,9 +2,6 @@
 using System;
 using MessengerClient.Services.Interfaces;
 using MessengerCommon.Services;
-using NLog;
-using NLog.Config;
-using NLog.Targets;
 
 namespace MessengerClient
 {
