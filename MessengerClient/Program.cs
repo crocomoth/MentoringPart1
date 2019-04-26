@@ -4,24 +4,16 @@ using MessengerCommon.Services;
 using NLog;
 using NLog.Config;
 using NLog.Targets;
+using PostSharp.Patterns.Diagnostics;
 
 namespace MessengerClient
 {
+    [Log(AttributeExclude = true)]
     class Program
     {
         static void Main(string[] args)
         {
-            var config = new LoggingConfiguration();
-
-            var fileTarget = new FileTarget("target2")
-            {
-                FileName = "${basedir}/clientLog.txt",
-                Layout = "${longdate} ${level} ${message}  ${exception}"
-            };
-            config.AddTarget(fileTarget);
-
-            config.AddRuleForAllLevels(fileTarget);
-            LogManager.Configuration = config;
+            LoggingInitializer.Initialize();
 
             ClientService worker = new ClientService();
             try
